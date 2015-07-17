@@ -1,6 +1,6 @@
-function experiment9(trials)
+function experiment9(sub, condition, trials)
 
-    global w rect A1 B1 A2 B2 A3 B3 sub pay
+    global w
     
     rng shuffle;
     
@@ -52,13 +52,35 @@ function experiment9(trials)
     point8 = CenterRectOnPoint(r, rect(3)*0.5, rect(4)*0.1667); %drawingpoints on screen
     point9 = CenterRectOnPoint(r, rect(3)*0.833, rect(4)*0.1667); %drawingpoints on screen
     
+    cpoint1 = CenterRectOnPoint(rc, rect(3)*0.1667, rect(4)*0.8333); %drawingpoints on screen
+    cpoint2 = CenterRectOnPoint(rc, rect(3)*0.5, rect(4)*0.8333); %drawingpoints on screen
+    cpoint3 = CenterRectOnPoint(rc, rect(3)*0.8333, rect(4)*0.8333); %drawingpoints on screen
+    cpoint4 = CenterRectOnPoint(rc, rect(3)*0.1667, rect(4)*0.5); %drawingpoints on screen
+    cpoint5 = CenterRectOnPoint(rc, rect(3)*0.5, rect(4)*0.5); %drawingpoints on screen
+    cpoint6 = CenterRectOnPoint(rc, rect(3)*0.8333, rect(4)*0.5); %drawingpoints on screen
+    cpoint7 = CenterRectOnPoint(rc, rect(3)*0.1667, rect(4)*0.1667); %drawingpoints on screen
+    cpoint8 = CenterRectOnPoint(rc, rect(3)*0.5, rect(4)*0.1667); %drawingpoints on screen
+    cpoint9 = CenterRectOnPoint(rc, rect(3)*0.833, rect(4)*0.1667); %drawingpoints on screen
     
    
     
     %images
     
-    A1 = imread('3.jpg','jpg');
-     
+    x = Shuffle(1:276);
+    x = x(1:9);
+    
+    A1 = imread(strcat('fractal',num2str(x(1)),'.jpg'),'jpg');
+    A2 = imread(strcat('fractal',num2str(x(2)),'.jpg'),'jpg');
+    A3 = imread(strcat('fractal',num2str(x(3)),'.jpg'),'jpg');
+    A4 = imread(strcat('fractal',num2str(x(4)),'.jpg'),'jpg');
+    A5 = imread(strcat('fractal',num2str(x(5)),'.jpg'),'jpg');
+    A6 = imread(strcat('fractal',num2str(x(6)),'.jpg'),'jpg');
+    A7 = imread(strcat('fractal',num2str(x(7)),'.jpg'),'jpg');
+    A8 = imread(strcat('fractal',num2str(x(8)),'.jpg'),'jpg');
+    A9 = imread(strcat('fractal',num2str(x(9)),'.jpg'),'jpg');
+    
+    
+    
     % Keyboard
     KbName('UnifyKeyNames');
     K1 = KbName('1');
@@ -75,32 +97,43 @@ function experiment9(trials)
     
         
     % Variables
+    
+    
         
     gray = 150;
     black = 0; 
     white = 255;
     brown = [102,51,0];
-         
+    pay = 0;
     
-    action = NaN(trials,3);
+    if condition == 1
+        pay1 = 10;
+        pay2 = 0;
+    else 
+        pay1 = 15;
+        pay2 = -5;
+    end
+    
+    
+    action = NaN(trials,1);
     choice_on_time = NaN(trials,1);
     choice_off_time = NaN(trials,1);
+    pay = NaN(trials,1);
     
     payoff_prob = [0.1:0.1:0.9];
+    payoff_prob = Shuffle(payoff_prob);
     
      % Waiting screen
-    Screen('FillRect', w, gray);
-    Screen('TextSize', w, 30);
+    Screen('FillRect', w, black);
+    Screen('TextSize', w, 55);
     
-    DrawFormattedText(w, 'Press any key to begin the experiment.', 'center', 'center', black);
+    DrawFormattedText(w, 'Press any key to begin the experiment.', 'center', 'center', white);
     
     Screen(w, 'Flip');
     KbWait;
    
 
 
-    [w, rect] = Screen('OpenWindow', whichScreen, 0,[], 32, ...
-        doublebuffer+1,[],[],kPsychNeedFastBackingStore);
 
     
     % Trial loop
@@ -112,16 +145,16 @@ function experiment9(trials)
                       
         % Draw stimuli
         
-             
+        Screen('FillRect', w, black);     
         pic1 = Screen('MakeTexture', w, A1);
-        pic2 = Screen('MakeTexture', w, A1);
-        pic3 = Screen('MakeTexture', w, A1);
-        pic4 = Screen('MakeTexture', w, A1);
-        pic5 = Screen('MakeTexture', w, A1);
-        pic6 = Screen('MakeTexture', w, A1);
-        pic7 = Screen('MakeTexture', w, A1);
-        pic8 = Screen('MakeTexture', w, A1);
-        pic9 = Screen('MakeTexture', w, A1);
+        pic2 = Screen('MakeTexture', w, A2);
+        pic3 = Screen('MakeTexture', w, A3);
+        pic4 = Screen('MakeTexture', w, A4);
+        pic5 = Screen('MakeTexture', w, A5);
+        pic6 = Screen('MakeTexture', w, A6);
+        pic7 = Screen('MakeTexture', w, A7);
+        pic8 = Screen('MakeTexture', w, A8);
+        pic9 = Screen('MakeTexture', w, A9);
         
         
        Screen('DrawTexture', w, pic1, [], point1);
@@ -140,104 +173,255 @@ function experiment9(trials)
 
               
         choice_on_time(trial,1) = GetSecs - t0;
-%         evt = Eyelink('newestfloatsample');
-%         et_on_time(trial,1) = evt.time - et0;
-        
+
         key_is_down = 0;
         FlushEvents;
         [key_is_down, secs, key_code] = KbCheck;
         
-        while key_code(L) == 0 && key_code(R) == 0
+        while key_code(K1) == 0 && key_code(K2) == 0 && key_code(K3) == 0 && key_code(K4) == 0 && key_code(K5) == 0 && key_code(K6) == 0 && key_code(K7) == 0 && key_code(K8) == 0 && key_code(K9) == 0
                 [key_is_down, secs, key_code] = KbCheck;
         end
         
         choice_off_time(trial,1) = GetSecs - t0;
-%         evt = Eyelink('newestfloatsample');
-%         et_off_time(trial,1) = evt.time - et0;
+
         down_key = find(key_code,1);
         
-        if (down_key==L && type == 0) || (down_key==R && type == 1)
-            action(trial,1)=0;
-        elseif (down_key==L && type == 1) || (down_key==R && type == 0)
+        r = rand;
+        
+        if (down_key==K1)
             action(trial,1)=1;
+            if payoff_prob(1) < r
+                pay(trial,1) = pay1;
+            else
+                pay(trial,1) = pay2;
+            end
+        elseif (down_key==K2)
+            action(trial,1)=2;
+            if payoff_prob(2) < r
+                pay(trial,1) = pay1;
+            else
+                pay(trial,1) = pay2;
+            end
+        elseif (down_key==K3)
+            action(trial,1)=3;
+            if payoff_prob(3) < r
+                pay(trial,1) = pay1;
+            else
+                pay(trial,1) = pay2;
+            end
+        elseif (down_key==K4)
+            action(trial,1)=4;
+            if payoff_prob(4) < r
+                pay(trial,1) = pay1;
+            else
+                pay(trial,1) = pay2;
+            end
+        elseif (down_key==K5)
+            action(trial,1)=5;
+            if payoff_prob(5) < r
+                pay(trial,1) = pay1;
+            else
+                pay(trial,1) = pay2;
+            end
+        elseif (down_key==K6)
+            action(trial,1)=6;
+            if payoff_prob(6) < r
+                pay(trial,1) = pay1;
+            else
+                pay(trial,1) = pay2;
+            end
+        elseif (down_key==K7)
+            action(trial,1)=7;
+            if payoff_prob(7) < r
+                pay(trial,1) = pay1;
+            else
+                pay(trial,1) = pay2;
+            end
+        elseif (down_key==K8)
+            action(trial,1)=8;
+            if payoff_prob(8) < r
+                pay(trial,1) = pay1;
+            else
+                pay(trial,1) = pay2;
+            end
+        elseif (down_key==K9)
+            action(trial,1)=9;
+            if payoff_prob(9) < r
+                pay(trial,1) = pay1;
+            else
+                pay(trial,1) = pay2;
+            end
         end
 %         
-%         if down_key == L 
-%             Screen('DrawTexture', w, picL, [], Lpoint);
-%             Screen('DrawTexture', w, picR, [], Rpoint);
-%             Screen('FrameRect',w,white,Lchoice);
-%             if bars == 1 
-%               [bLind, pLind, bRind, pRind] = drawind(type,a(trial,1));
-%               Screen('FillRect', w, blue, bLind);
-%               Screen('FillRect', w, purple, pLind);
-%               Screen('FillRect', w, blue, bRind);
-%               Screen('FillRect', w, purple, pRind);
-%             end
-%            Screen('Flip',w);
-%            
-%        elseif down_key == R
-%            
-%            Screen('DrawTexture', w, picL, [], Lpoint);
-%            Screen('DrawTexture', w, picR, [], Rpoint);
-%            Screen('FrameRect',w,white,Rchoice);
-%             if bars == 1 
-%               [bLind, pLind, bRind, pRind] = drawind(type,a(trial,1));
-%               Screen('FillRect', w, blue, bLind);
-%               Screen('FillRect', w, purple, pLind);
-%               Screen('FillRect', w, blue, bRind);
-%               Screen('FillRect', w, purple, pRind);
-%             end
-%            Screen('Flip',w);
-%         end
-%         
-%         
+        if down_key == K1 
+          
+           Screen('DrawTexture', w, pic1, [], point1);
+           Screen('DrawTexture', w, pic2, [], point2);
+           Screen('DrawTexture', w, pic3, [], point3);
+           Screen('DrawTexture', w, pic4, [], point4);
+           Screen('DrawTexture', w, pic5, [], point5);
+           Screen('DrawTexture', w, pic6, [], point6);
+           Screen('DrawTexture', w, pic7, [], point7);
+           Screen('DrawTexture', w, pic8, [], point8);
+           Screen('DrawTexture', w, pic9, [], point9);
+           Screen('FrameRect',w,white,cpoint1);
+           Screen('Flip',w);
+        
+        elseif down_key == K2 
+          
+           Screen('DrawTexture', w, pic1, [], point1);
+           Screen('DrawTexture', w, pic2, [], point2);
+           Screen('DrawTexture', w, pic3, [], point3);
+           Screen('DrawTexture', w, pic4, [], point4);
+           Screen('DrawTexture', w, pic5, [], point5);
+           Screen('DrawTexture', w, pic6, [], point6);
+           Screen('DrawTexture', w, pic7, [], point7);
+           Screen('DrawTexture', w, pic8, [], point8);
+           Screen('DrawTexture', w, pic9, [], point9);
+           Screen('FrameRect',w,white,cpoint2);
+           Screen('Flip',w);
+           
+       elseif down_key == K3 
+          
+           Screen('DrawTexture', w, pic1, [], point1);
+           Screen('DrawTexture', w, pic2, [], point2);
+           Screen('DrawTexture', w, pic3, [], point3);
+           Screen('DrawTexture', w, pic4, [], point4);
+           Screen('DrawTexture', w, pic5, [], point5);
+           Screen('DrawTexture', w, pic6, [], point6);
+           Screen('DrawTexture', w, pic7, [], point7);
+           Screen('DrawTexture', w, pic8, [], point8);
+           Screen('DrawTexture', w, pic9, [], point9);
+           Screen('FrameRect',w,white,cpoint3);
+           Screen('Flip',w);
+           
+           elseif down_key == K4 
+          
+           Screen('DrawTexture', w, pic1, [], point1);
+           Screen('DrawTexture', w, pic2, [], point2);
+           Screen('DrawTexture', w, pic3, [], point3);
+           Screen('DrawTexture', w, pic4, [], point4);
+           Screen('DrawTexture', w, pic5, [], point5);
+           Screen('DrawTexture', w, pic6, [], point6);
+           Screen('DrawTexture', w, pic7, [], point7);
+           Screen('DrawTexture', w, pic8, [], point8);
+           Screen('DrawTexture', w, pic9, [], point9);
+           Screen('FrameRect',w,white,cpoint4);
+           Screen('Flip',w);
+           
+           elseif down_key == K5 
+          
+           Screen('DrawTexture', w, pic1, [], point1);
+           Screen('DrawTexture', w, pic2, [], point2);
+           Screen('DrawTexture', w, pic3, [], point3);
+           Screen('DrawTexture', w, pic4, [], point4);
+           Screen('DrawTexture', w, pic5, [], point5);
+           Screen('DrawTexture', w, pic6, [], point6);
+           Screen('DrawTexture', w, pic7, [], point7);
+           Screen('DrawTexture', w, pic8, [], point8);
+           Screen('DrawTexture', w, pic9, [], point9);
+           Screen('FrameRect',w,white,cpoint5);
+           Screen('Flip',w);
+           
+           elseif down_key == K6
+          
+           Screen('DrawTexture', w, pic1, [], point1);
+           Screen('DrawTexture', w, pic2, [], point2);
+           Screen('DrawTexture', w, pic3, [], point3);
+           Screen('DrawTexture', w, pic4, [], point4);
+           Screen('DrawTexture', w, pic5, [], point5);
+           Screen('DrawTexture', w, pic6, [], point6);
+           Screen('DrawTexture', w, pic7, [], point7);
+           Screen('DrawTexture', w, pic8, [], point8);
+           Screen('DrawTexture', w, pic9, [], point9);
+           Screen('FrameRect',w,white,cpoint6);
+           Screen('Flip',w);
+           
+           elseif down_key == K7
+          
+           Screen('DrawTexture', w, pic1, [], point1);
+           Screen('DrawTexture', w, pic2, [], point2);
+           Screen('DrawTexture', w, pic3, [], point3);
+           Screen('DrawTexture', w, pic4, [], point4);
+           Screen('DrawTexture', w, pic5, [], point5);
+           Screen('DrawTexture', w, pic6, [], point6);
+           Screen('DrawTexture', w, pic7, [], point7);
+           Screen('DrawTexture', w, pic8, [], point8);
+           Screen('DrawTexture', w, pic9, [], point9);
+           Screen('FrameRect',w,white,cpoint7);
+           Screen('Flip',w);
+           
+            elseif down_key == K8
+          
+           Screen('DrawTexture', w, pic1, [], point1);
+           Screen('DrawTexture', w, pic2, [], point2);
+           Screen('DrawTexture', w, pic3, [], point3);
+           Screen('DrawTexture', w, pic4, [], point4);
+           Screen('DrawTexture', w, pic5, [], point5);
+           Screen('DrawTexture', w, pic6, [], point6);
+           Screen('DrawTexture', w, pic7, [], point7);
+           Screen('DrawTexture', w, pic8, [], point8);
+           Screen('DrawTexture', w, pic9, [], point9);
+           Screen('FrameRect',w,white,cpoint8);
+           Screen('Flip',w);
+           
+            elseif down_key == K9
+          
+           Screen('DrawTexture', w, pic1, [], point1);
+           Screen('DrawTexture', w, pic2, [], point2);
+           Screen('DrawTexture', w, pic3, [], point3);
+           Screen('DrawTexture', w, pic4, [], point4);
+           Screen('DrawTexture', w, pic5, [], point5);
+           Screen('DrawTexture', w, pic6, [], point6);
+           Screen('DrawTexture', w, pic7, [], point7);
+           Screen('DrawTexture', w, pic8, [], point8);
+           Screen('DrawTexture', w, pic9, [], point9);
+           Screen('FrameRect',w,white,cpoint9);
+           Screen('Flip',w);
+        end
+        
+       WaitSecs(0.7);  
+       
+       
+    Screen('TextSize', w, 55);
+    DrawFormattedText(w, 'Your payoff is', 'center', rect(4)*0.5, white);
+    DrawFormattedText(w,  num2str(pay(trial,1)), 'center', rect(4)*0.6, white);
+%     DrawFormattedText(w, 'Your total is', 'center', rect(4)*0.65, white);
+%     DrawFormattedText(w,  num2str(sum(pay(1:trial,1))), 'center', rect(4)*0.75, white);
+    Screen(w, 'Flip');
+    WaitSecs(0.7);
+    
     
     end
     
     RestrictKeysForKbCheck([]);
     
     %saving data
-    two_stage_task_data = struct;
-    two_stage_task_data.subject = sub; %*ones(trials,1);
-    two_stage_task_data.position = position;
-    two_stage_task_data.action = action;
-    two_stage_task_data.on = choice_on_time;
-    two_stage_task_data.off = choice_off_time;
-%     two_stage_task_data.eton = et_on_time;
-%     two_stage_task_data.etoff = et_off_time;
-    two_stage_task_data.rt = choice_off_time-choice_on_time;
-    two_stage_task_data.transition_prob = a;
-    two_stage_task_data.payoff_prob = payoff_prob;
-    two_stage_task_data.payoff = payoff;
-    two_stage_task_data.state = state;
-%      two_stage_task_data.et0 = et0;
-    save(results_file_name, 'two_stage_task_data', '-v6');
-    
-     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%turn off eyetracking
-%         Eyelink('stoprecording');
-            
-        
-%     Eyelink('closefile');
-%     status = Eyelink('receivefile',etfilename);
-%     Eyelink('shutdown');
-
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    data = struct;
+    data.subject = sub; %*ones(trials,1);
+   
+    data.action = action;
+    data.on = choice_on_time;
+    data.off = choice_off_time;
+    data.pay = pay;
+    data.rt = choice_off_time-choice_on_time;
+ 
+    data.payoff_prob = payoff_prob;
+    %two_stage_task_data.payoff = payoff;
+    save('sub',strcat(num2str(sub),'con',num2str(condition),'.mat'), 'data', '-v6');
     
     % Payoff screen
     
-    payoff_sum = sum(nansum(payoff)); 
-    Screen(w, 'FillRect', gray);
-    Screen('TextSize', w, 30);
-    DrawFormattedText(w, 'This part is complete. Your payoff in points in all rounds:', 'center', 'center', black);
-    DrawFormattedText(w,  num2str(payoff_sum), 'center', rect(4)*0.6, black);
-    DrawFormattedText(w, 'Press any key to quit', 'center', rect(4)*0.8, black);
+    payoff_sum = sum(pay); 
+    Screen(w, 'FillRect', black);
+    Screen('TextSize', w, 55);
+    DrawFormattedText(w, 'This part is complete. Your payoff in points in all rounds:', 'center', 'center', white);
+    DrawFormattedText(w,  num2str(payoff_sum), 'center', rect(4)*0.6, white);
+    DrawFormattedText(w, 'Press any key to quit', 'center', rect(4)*0.8, white);
     Screen(w, 'Flip');
     WaitSecs(1);
     KbWait;
     
-    if practice == 0
-       pay = pay + payoff_sum/20;
-    end
     
     Screen('Close',w);
     Screen('CloseAll');
