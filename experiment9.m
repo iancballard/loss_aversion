@@ -52,6 +52,8 @@ function experiment9(sub, condition, trials)
     point8 = CenterRectOnPoint(r, rect(3)*0.5, rect(4)*0.1667); %drawingpoints on screen
     point9 = CenterRectOnPoint(r, rect(3)*0.833, rect(4)*0.1667); %drawingpoints on screen
     
+    points = {point1 point2 point3 point4 point5 point6 point7 point8 point9};
+    
     cpoint1 = CenterRectOnPoint(rc, rect(3)*0.1667, rect(4)*0.8333); %drawingpoints on screen
     cpoint2 = CenterRectOnPoint(rc, rect(3)*0.5, rect(4)*0.8333); %drawingpoints on screen
     cpoint3 = CenterRectOnPoint(rc, rect(3)*0.8333, rect(4)*0.8333); %drawingpoints on screen
@@ -120,8 +122,18 @@ function experiment9(sub, condition, trials)
     choice_off_time = NaN(trials,1);
     pay = NaN(trials,1);
     
-    payoff_prob = [0.1:0.1:0.9];
-    payoff_prob = Shuffle(payoff_prob);
+    pp = [0.1:0.1:0.9];
+    pp = Shuffle(pp);
+    
+    payoff_prob = NaN(trials,9);
+    payoff_prob(1,1:9) = pp;
+    
+    positions = NaN(trials,9);
+    for i = 1:trials
+        pp = [1:1:9];
+        pp = Shuffle(pp);
+        positions(i,:) = pp;
+    end
     
      % Waiting screen
     Screen('FillRect', w, black);
@@ -157,15 +169,24 @@ function experiment9(sub, condition, trials)
         pic9 = Screen('MakeTexture', w, A9);
         
         
-       Screen('DrawTexture', w, pic1, [], point1);
-       Screen('DrawTexture', w, pic2, [], point2);
-       Screen('DrawTexture', w, pic3, [], point3);
-       Screen('DrawTexture', w, pic4, [], point4);
-       Screen('DrawTexture', w, pic5, [], point5);
-       Screen('DrawTexture', w, pic6, [], point6);
-       Screen('DrawTexture', w, pic7, [], point7);
-       Screen('DrawTexture', w, pic8, [], point8);
-       Screen('DrawTexture', w, pic9, [], point9);
+       Screen('DrawTexture', w, pic1, [], points{positions(trial,1)});
+       Screen('DrawTexture', w, pic2, [], points{positions(trial,2)});
+       Screen('DrawTexture', w, pic3, [], points{positions(trial,3)});
+       Screen('DrawTexture', w, pic4, [], points{positions(trial,4)});
+       Screen('DrawTexture', w, pic5, [], points{positions(trial,5)});
+       Screen('DrawTexture', w, pic6, [], points{positions(trial,6)});
+       Screen('DrawTexture', w, pic7, [], points{positions(trial,7)});
+       Screen('DrawTexture', w, pic8, [], points{positions(trial,8)});
+       Screen('DrawTexture', w, pic9, [], points{positions(trial,9)});
+       
+%        Screen('DrawTexture', w, pic2, [], point2);
+%        Screen('DrawTexture', w, pic3, [], point3);
+%        Screen('DrawTexture', w, pic4, [], point4);
+%        Screen('DrawTexture', w, pic5, [], point5);
+%        Screen('DrawTexture', w, pic6, [], point6);
+%        Screen('DrawTexture', w, pic7, [], point7);
+%        Screen('DrawTexture', w, pic8, [], point8);
+%        Screen('DrawTexture', w, pic9, [], point9);
        
         
         
@@ -189,64 +210,64 @@ function experiment9(sub, condition, trials)
         r = rand;
         
         if (down_key==K1)
-            action(trial,1)=1;
-            if payoff_prob(1) < r
+            action(trial,1)=find(positions(trial,:)==1);
+            if payoff_prob(trial,find(positions(trial,:)==1)) < r
                 pay(trial,1) = pay1;
             else
                 pay(trial,1) = pay2;
             end
         elseif (down_key==K2)
-            action(trial,1)=2;
-            if payoff_prob(2) < r
+            action(trial,1)=find(positions(trial,:)==2);
+            if payoff_prob(trial,find(positions(trial,:)==2)) < r
                 pay(trial,1) = pay1;
             else
                 pay(trial,1) = pay2;
             end
         elseif (down_key==K3)
-            action(trial,1)=3;
-            if payoff_prob(3) < r
+            action(trial,1)=find(positions(trial,:)==3);
+            if payoff_prob(trial,find(positions(trial,:)==3)) < r
                 pay(trial,1) = pay1;
             else
                 pay(trial,1) = pay2;
             end
         elseif (down_key==K4)
-            action(trial,1)=4;
-            if payoff_prob(4) < r
+            action(trial,1)=find(positions(trial,:)==4);
+            if payoff_prob(trial,find(positions(trial,:)==4)) < r
                 pay(trial,1) = pay1;
             else
                 pay(trial,1) = pay2;
             end
         elseif (down_key==K5)
-            action(trial,1)=5;
-            if payoff_prob(5) < r
+            action(trial,1)=find(positions(trial,:)==5);
+            if payoff_prob(trial,find(positions(trial,:)==5)) < r
                 pay(trial,1) = pay1;
             else
                 pay(trial,1) = pay2;
             end
         elseif (down_key==K6)
-            action(trial,1)=6;
-            if payoff_prob(6) < r
+            action(trial,1)=find(positions(trial,:)==6);
+            if payoff_prob(trial,find(positions(trial,:)==6)) < r
                 pay(trial,1) = pay1;
             else
                 pay(trial,1) = pay2;
             end
         elseif (down_key==K7)
-            action(trial,1)=7;
-            if payoff_prob(7) < r
+            action(trial,1)=find(positions(trial,:)==7);
+            if payoff_prob(trial,find(positions(trial,:)==7)) < r
                 pay(trial,1) = pay1;
             else
                 pay(trial,1) = pay2;
             end
         elseif (down_key==K8)
-            action(trial,1)=8;
-            if payoff_prob(8) < r
+            action(trial,1)=find(positions(trial,:)==8);
+            if payoff_prob(trial,find(positions(trial,:)==8)) < r
                 pay(trial,1) = pay1;
             else
                 pay(trial,1) = pay2;
             end
         elseif (down_key==K9)
-            action(trial,1)=9;
-            if payoff_prob(9) < r
+            action(trial,1)=find(positions(trial,:)==9);
+            if payoff_prob(trial,find(positions(trial,:)==9)) < r
                 pay(trial,1) = pay1;
             else
                 pay(trial,1) = pay2;
@@ -255,127 +276,127 @@ function experiment9(sub, condition, trials)
 %         
         if down_key == K1 
           
-           Screen('DrawTexture', w, pic1, [], point1);
-           Screen('DrawTexture', w, pic2, [], point2);
-           Screen('DrawTexture', w, pic3, [], point3);
-           Screen('DrawTexture', w, pic4, [], point4);
-           Screen('DrawTexture', w, pic5, [], point5);
-           Screen('DrawTexture', w, pic6, [], point6);
-           Screen('DrawTexture', w, pic7, [], point7);
-           Screen('DrawTexture', w, pic8, [], point8);
-           Screen('DrawTexture', w, pic9, [], point9);
+            Screen('DrawTexture', w, pic1, [], points{positions(trial,1)});
+       Screen('DrawTexture', w, pic2, [], points{positions(trial,2)});
+       Screen('DrawTexture', w, pic3, [], points{positions(trial,3)});
+       Screen('DrawTexture', w, pic4, [], points{positions(trial,4)});
+       Screen('DrawTexture', w, pic5, [], points{positions(trial,5)});
+       Screen('DrawTexture', w, pic6, [], points{positions(trial,6)});
+       Screen('DrawTexture', w, pic7, [], points{positions(trial,7)});
+       Screen('DrawTexture', w, pic8, [], points{positions(trial,8)});
+       Screen('DrawTexture', w, pic9, [], points{positions(trial,9)});
            Screen('FrameRect',w,white,cpoint1);
            Screen('Flip',w);
         
         elseif down_key == K2 
           
-           Screen('DrawTexture', w, pic1, [], point1);
-           Screen('DrawTexture', w, pic2, [], point2);
-           Screen('DrawTexture', w, pic3, [], point3);
-           Screen('DrawTexture', w, pic4, [], point4);
-           Screen('DrawTexture', w, pic5, [], point5);
-           Screen('DrawTexture', w, pic6, [], point6);
-           Screen('DrawTexture', w, pic7, [], point7);
-           Screen('DrawTexture', w, pic8, [], point8);
-           Screen('DrawTexture', w, pic9, [], point9);
+            Screen('DrawTexture', w, pic1, [], points{positions(trial,1)});
+       Screen('DrawTexture', w, pic2, [], points{positions(trial,2)});
+       Screen('DrawTexture', w, pic3, [], points{positions(trial,3)});
+       Screen('DrawTexture', w, pic4, [], points{positions(trial,4)});
+       Screen('DrawTexture', w, pic5, [], points{positions(trial,5)});
+       Screen('DrawTexture', w, pic6, [], points{positions(trial,6)});
+       Screen('DrawTexture', w, pic7, [], points{positions(trial,7)});
+       Screen('DrawTexture', w, pic8, [], points{positions(trial,8)});
+       Screen('DrawTexture', w, pic9, [], points{positions(trial,9)});
            Screen('FrameRect',w,white,cpoint2);
            Screen('Flip',w);
            
        elseif down_key == K3 
           
-           Screen('DrawTexture', w, pic1, [], point1);
-           Screen('DrawTexture', w, pic2, [], point2);
-           Screen('DrawTexture', w, pic3, [], point3);
-           Screen('DrawTexture', w, pic4, [], point4);
-           Screen('DrawTexture', w, pic5, [], point5);
-           Screen('DrawTexture', w, pic6, [], point6);
-           Screen('DrawTexture', w, pic7, [], point7);
-           Screen('DrawTexture', w, pic8, [], point8);
-           Screen('DrawTexture', w, pic9, [], point9);
+            Screen('DrawTexture', w, pic1, [], points{positions(trial,1)});
+       Screen('DrawTexture', w, pic2, [], points{positions(trial,2)});
+       Screen('DrawTexture', w, pic3, [], points{positions(trial,3)});
+       Screen('DrawTexture', w, pic4, [], points{positions(trial,4)});
+       Screen('DrawTexture', w, pic5, [], points{positions(trial,5)});
+       Screen('DrawTexture', w, pic6, [], points{positions(trial,6)});
+       Screen('DrawTexture', w, pic7, [], points{positions(trial,7)});
+       Screen('DrawTexture', w, pic8, [], points{positions(trial,8)});
+       Screen('DrawTexture', w, pic9, [], points{positions(trial,9)});
            Screen('FrameRect',w,white,cpoint3);
            Screen('Flip',w);
            
            elseif down_key == K4 
           
-           Screen('DrawTexture', w, pic1, [], point1);
-           Screen('DrawTexture', w, pic2, [], point2);
-           Screen('DrawTexture', w, pic3, [], point3);
-           Screen('DrawTexture', w, pic4, [], point4);
-           Screen('DrawTexture', w, pic5, [], point5);
-           Screen('DrawTexture', w, pic6, [], point6);
-           Screen('DrawTexture', w, pic7, [], point7);
-           Screen('DrawTexture', w, pic8, [], point8);
-           Screen('DrawTexture', w, pic9, [], point9);
+            Screen('DrawTexture', w, pic1, [], points{positions(trial,1)});
+       Screen('DrawTexture', w, pic2, [], points{positions(trial,2)});
+       Screen('DrawTexture', w, pic3, [], points{positions(trial,3)});
+       Screen('DrawTexture', w, pic4, [], points{positions(trial,4)});
+       Screen('DrawTexture', w, pic5, [], points{positions(trial,5)});
+       Screen('DrawTexture', w, pic6, [], points{positions(trial,6)});
+       Screen('DrawTexture', w, pic7, [], points{positions(trial,7)});
+       Screen('DrawTexture', w, pic8, [], points{positions(trial,8)});
+       Screen('DrawTexture', w, pic9, [], points{positions(trial,9)});
            Screen('FrameRect',w,white,cpoint4);
            Screen('Flip',w);
            
            elseif down_key == K5 
           
-           Screen('DrawTexture', w, pic1, [], point1);
-           Screen('DrawTexture', w, pic2, [], point2);
-           Screen('DrawTexture', w, pic3, [], point3);
-           Screen('DrawTexture', w, pic4, [], point4);
-           Screen('DrawTexture', w, pic5, [], point5);
-           Screen('DrawTexture', w, pic6, [], point6);
-           Screen('DrawTexture', w, pic7, [], point7);
-           Screen('DrawTexture', w, pic8, [], point8);
-           Screen('DrawTexture', w, pic9, [], point9);
+           Screen('DrawTexture', w, pic1, [], points{positions(trial,1)});
+       Screen('DrawTexture', w, pic2, [], points{positions(trial,2)});
+       Screen('DrawTexture', w, pic3, [], points{positions(trial,3)});
+       Screen('DrawTexture', w, pic4, [], points{positions(trial,4)});
+       Screen('DrawTexture', w, pic5, [], points{positions(trial,5)});
+       Screen('DrawTexture', w, pic6, [], points{positions(trial,6)});
+       Screen('DrawTexture', w, pic7, [], points{positions(trial,7)});
+       Screen('DrawTexture', w, pic8, [], points{positions(trial,8)});
+       Screen('DrawTexture', w, pic9, [], points{positions(trial,9)});
            Screen('FrameRect',w,white,cpoint5);
            Screen('Flip',w);
            
            elseif down_key == K6
           
-           Screen('DrawTexture', w, pic1, [], point1);
-           Screen('DrawTexture', w, pic2, [], point2);
-           Screen('DrawTexture', w, pic3, [], point3);
-           Screen('DrawTexture', w, pic4, [], point4);
-           Screen('DrawTexture', w, pic5, [], point5);
-           Screen('DrawTexture', w, pic6, [], point6);
-           Screen('DrawTexture', w, pic7, [], point7);
-           Screen('DrawTexture', w, pic8, [], point8);
-           Screen('DrawTexture', w, pic9, [], point9);
+            Screen('DrawTexture', w, pic1, [], points{positions(trial,1)});
+       Screen('DrawTexture', w, pic2, [], points{positions(trial,2)});
+       Screen('DrawTexture', w, pic3, [], points{positions(trial,3)});
+       Screen('DrawTexture', w, pic4, [], points{positions(trial,4)});
+       Screen('DrawTexture', w, pic5, [], points{positions(trial,5)});
+       Screen('DrawTexture', w, pic6, [], points{positions(trial,6)});
+       Screen('DrawTexture', w, pic7, [], points{positions(trial,7)});
+       Screen('DrawTexture', w, pic8, [], points{positions(trial,8)});
+       Screen('DrawTexture', w, pic9, [], points{positions(trial,9)});
            Screen('FrameRect',w,white,cpoint6);
            Screen('Flip',w);
            
            elseif down_key == K7
           
-           Screen('DrawTexture', w, pic1, [], point1);
-           Screen('DrawTexture', w, pic2, [], point2);
-           Screen('DrawTexture', w, pic3, [], point3);
-           Screen('DrawTexture', w, pic4, [], point4);
-           Screen('DrawTexture', w, pic5, [], point5);
-           Screen('DrawTexture', w, pic6, [], point6);
-           Screen('DrawTexture', w, pic7, [], point7);
-           Screen('DrawTexture', w, pic8, [], point8);
-           Screen('DrawTexture', w, pic9, [], point9);
+            Screen('DrawTexture', w, pic1, [], points{positions(trial,1)});
+       Screen('DrawTexture', w, pic2, [], points{positions(trial,2)});
+       Screen('DrawTexture', w, pic3, [], points{positions(trial,3)});
+       Screen('DrawTexture', w, pic4, [], points{positions(trial,4)});
+       Screen('DrawTexture', w, pic5, [], points{positions(trial,5)});
+       Screen('DrawTexture', w, pic6, [], points{positions(trial,6)});
+       Screen('DrawTexture', w, pic7, [], points{positions(trial,7)});
+       Screen('DrawTexture', w, pic8, [], points{positions(trial,8)});
+       Screen('DrawTexture', w, pic9, [], points{positions(trial,9)});
            Screen('FrameRect',w,white,cpoint7);
            Screen('Flip',w);
            
             elseif down_key == K8
           
-           Screen('DrawTexture', w, pic1, [], point1);
-           Screen('DrawTexture', w, pic2, [], point2);
-           Screen('DrawTexture', w, pic3, [], point3);
-           Screen('DrawTexture', w, pic4, [], point4);
-           Screen('DrawTexture', w, pic5, [], point5);
-           Screen('DrawTexture', w, pic6, [], point6);
-           Screen('DrawTexture', w, pic7, [], point7);
-           Screen('DrawTexture', w, pic8, [], point8);
-           Screen('DrawTexture', w, pic9, [], point9);
+            Screen('DrawTexture', w, pic1, [], points{positions(trial,1)});
+       Screen('DrawTexture', w, pic2, [], points{positions(trial,2)});
+       Screen('DrawTexture', w, pic3, [], points{positions(trial,3)});
+       Screen('DrawTexture', w, pic4, [], points{positions(trial,4)});
+       Screen('DrawTexture', w, pic5, [], points{positions(trial,5)});
+       Screen('DrawTexture', w, pic6, [], points{positions(trial,6)});
+       Screen('DrawTexture', w, pic7, [], points{positions(trial,7)});
+       Screen('DrawTexture', w, pic8, [], points{positions(trial,8)});
+       Screen('DrawTexture', w, pic9, [], points{positions(trial,9)});
            Screen('FrameRect',w,white,cpoint8);
            Screen('Flip',w);
            
             elseif down_key == K9
           
-           Screen('DrawTexture', w, pic1, [], point1);
-           Screen('DrawTexture', w, pic2, [], point2);
-           Screen('DrawTexture', w, pic3, [], point3);
-           Screen('DrawTexture', w, pic4, [], point4);
-           Screen('DrawTexture', w, pic5, [], point5);
-           Screen('DrawTexture', w, pic6, [], point6);
-           Screen('DrawTexture', w, pic7, [], point7);
-           Screen('DrawTexture', w, pic8, [], point8);
-           Screen('DrawTexture', w, pic9, [], point9);
+            Screen('DrawTexture', w, pic1, [], points{positions(trial,1)});
+       Screen('DrawTexture', w, pic2, [], points{positions(trial,2)});
+       Screen('DrawTexture', w, pic3, [], points{positions(trial,3)});
+       Screen('DrawTexture', w, pic4, [], points{positions(trial,4)});
+       Screen('DrawTexture', w, pic5, [], points{positions(trial,5)});
+       Screen('DrawTexture', w, pic6, [], points{positions(trial,6)});
+       Screen('DrawTexture', w, pic7, [], points{positions(trial,7)});
+       Screen('DrawTexture', w, pic8, [], points{positions(trial,8)});
+       Screen('DrawTexture', w, pic9, [], points{positions(trial,9)});
            Screen('FrameRect',w,white,cpoint9);
            Screen('Flip',w);
         end
@@ -392,6 +413,13 @@ function experiment9(sub, condition, trials)
     WaitSecs(0.7);
     
     
+    for i = 1:9
+            payoff_prob(trial+1,i) = payoff_prob(trial,i) + 0.025*randn;
+            if (payoff_prob(trial+1,i) < 0.1) || (payoff_prob(trial+1,i) > 0.9)
+                payoff_prob(trial+1,i) = payoff_prob(trial,i);
+            end
+    end
+    
     end
     
     RestrictKeysForKbCheck([]);
@@ -405,10 +433,10 @@ function experiment9(sub, condition, trials)
     data.off = choice_off_time;
     data.pay = pay;
     data.rt = choice_off_time-choice_on_time;
- 
+    data.positions = positions;
     data.payoff_prob = payoff_prob;
     %two_stage_task_data.payoff = payoff;
-    save('sub',strcat(num2str(sub),'con',num2str(condition),'.mat'), 'data', '-v6');
+    save(strcat('sub',num2str(sub),'con',num2str(condition),'.mat'), 'data', '-v6');
     
     % Payoff screen
     
